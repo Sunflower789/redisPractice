@@ -14,5 +14,8 @@ singleServerConfig:
   connectionPoolSize: 64
   database: 0
   dnsMonitoringInterval: 5000
-threads: 16
-nettyThreads: 32
+threads: 1
+nettyThreads: 1
+#codec: !<org.redisson.codec.Kryo5Codec> {}  #redisson默认的序列化类型
+codec: !<org.redisson.codec.JsonJacksonCodec> {}  #Jackson JSON序列化
+transportMode: "NIO"

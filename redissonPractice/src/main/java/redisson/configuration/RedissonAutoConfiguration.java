@@ -19,6 +19,8 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.RedissonReactiveClient;
 import org.redisson.api.RedissonRxClient;
+import org.redisson.client.codec.Codec;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,21 +77,21 @@ public class RedissonAutoConfiguration {
     @Autowired
     private ApplicationContext ctx;
 
-    @Bean
-    @ConditionalOnMissingBean(name = "redisTemplate")
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(StringRedisTemplate.class)
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        StringRedisTemplate template = new StringRedisTemplate();
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(name = "redisTemplate")
+//    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+//        RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
+//        template.setConnectionFactory(redisConnectionFactory);
+//        return template;
+//    }
+//
+//    @Bean
+//    @ConditionalOnMissingBean(StringRedisTemplate.class)
+//    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+//        StringRedisTemplate template = new StringRedisTemplate();
+//        template.setConnectionFactory(redisConnectionFactory);
+//        return template;
+//    }
 
     @Bean
     @ConditionalOnMissingBean(RedisConnectionFactory.class)
@@ -142,6 +144,9 @@ public class RedissonAutoConfiguration {
             try {
                 InputStream is = getConfigStream();
                 config = Config.fromYAML(is);
+                // 可以手动修改序列化方式
+                //Codec codec = new JsonJacksonCodec();
+                //config.setCodec(codec);
             } catch (IOException e) {
                 // trying next format
                 try {
