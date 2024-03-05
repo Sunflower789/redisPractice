@@ -113,7 +113,7 @@ public class RedissonAutoConfiguration {
         return redisson.rxJava();
     }
 
-    @Bean(destroyMethod = "shutdown")
+    @Bean(destroyMethod = "shutdown",value = "redissonClient")
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redisson() throws IOException {
         Config config = null;

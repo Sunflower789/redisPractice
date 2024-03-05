@@ -3,6 +3,7 @@ package redisson.service;
 import org.redisson.api.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import redisson.utils.RedissonUtils;
 
 import javax.annotation.Resource;
 import java.util.concurrent.*;
@@ -55,6 +56,12 @@ public class RedissonService {
         System.out.println("开始异步获取3");
         Object result = get.block();
         return result.toString();
+    }
+
+    public void test4(String key){
+        RMap<String, Object> map = redissonClient.getMap(key);
+        int a = (Integer) map.get("bbb");
+        System.out.println(a);
     }
 
 }
