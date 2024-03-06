@@ -444,6 +444,70 @@ public class RedissonUtils<T> {
     }
 
 
+    /***** 分布式锁 *****/
+
+    /**
+     * 阻塞获取锁
+     * */
+    public static void lock(String key) {
+        RLock lock = redissonClient.getLock(key);
+        lock.lock();
+    }
+
+    /**
+     * 非阻塞获取锁
+     * */
+    public static boolean tryLock(String key) {
+        RLock lock = redissonClient.getLock(key);
+        return lock.tryLock();
+    }
+
+    /**
+     * 非阻塞获取锁
+     * @param expireTime   过期时间释放锁
+     * */
+    public static boolean tryLock(String key,int expireTime,TimeUnit timeUnit) throws InterruptedException {
+        RLock lock = redissonClient.getLock(key);
+        return lock.tryLock(expireTime,timeUnit);
+    }
+
+    /**
+     * 非阻塞获取锁
+     * @param expireTime   过期时间释放锁
+     * @param blockTime    等待获取锁的时间
+     * */
+    public static boolean tryLock(String key,int blockTime,int expireTime,TimeUnit timeUnit) throws InterruptedException {
+        RLock lock = redissonClient.getLock(key);
+        return lock.tryLock(blockTime,expireTime,timeUnit);
+    }
+
+    /**
+     * 释放锁
+     * */
+    public static void unlock(String key) {
+        RLock lock = redissonClient.getLock(key);
+        lock.unlock();
+    }
+
+    /**
+     * 分布式计数同步器等待
+     * @param size   计数大小
+     * */
+    public static void countDownAwait(String key, int size) throws InterruptedException {
+        RCountDownLatch latch = redissonClient.getCountDownLatch(key);
+        latch.trySetCount(size);
+        // await for count down
+        latch.await();
+    }
+
+    /**
+     * 分布式计数同步器 计数
+     * */
+    public static void countDownAwait(String key) throws InterruptedException {
+        RCountDownLatch latch = redissonClient.getCountDownLatch(key);
+        latch.countDown();
+    }
+
 
 
 
