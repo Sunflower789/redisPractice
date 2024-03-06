@@ -1,6 +1,9 @@
 package redisson.service;
 
 import org.redisson.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import redisson.utils.RedissonUtils;
@@ -19,6 +22,9 @@ public class RedissonService {
 
     @Resource
     RedissonRxClient redissonRxClient;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     public String test1(){
         RBucket<Object> bucket = redissonClient.getBucket("name3");
@@ -62,6 +68,11 @@ public class RedissonService {
         RMap<String, Object> map = redissonClient.getMap(key);
         int a = (Integer) map.get("bbb");
         System.out.println(a);
+    }
+
+    public String test5(String key){
+        stringRedisTemplate.opsForValue().set(key,"aabb");
+        return stringRedisTemplate.opsForValue().get(key);
     }
 
 }

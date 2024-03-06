@@ -26,4 +26,9 @@ public class RedissonController {
         redissonService.test4(key);
         return "1122";
     }
+
+    @PostMapping("/test3")
+    private String test2(@RequestHeader("key") String key) throws ExecutionException, InterruptedException {
+        return redissonService.test5(key);
+    }
 }
